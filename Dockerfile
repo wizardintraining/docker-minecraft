@@ -1,6 +1,11 @@
 FROM openjdk:8u222
 
+RUN apt-get update && \
+    apt-get install -y wget
+
 ENV DATA_DIR="/data" \
+    SERVER_DIR="/data/server" \
+    JAR_NAME="server" \
     UID="500" \
     GID="100"
 
