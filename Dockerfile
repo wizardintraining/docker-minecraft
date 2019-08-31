@@ -1,7 +1,16 @@
 FROM openjdk:8u222
 
-RUN mkdir /data
+ENV DATA_DIR="/data" \
+    UID="99" \
+    GID="100"
 
-COPY ./start-server.sh /data/start-server.sh
+RUN mkdir $DATA_DIR
 
-ENTRYPOINT ["/data/start-server.sh"]
+RUN useradd -d $DATA_DIR -s /bin/bash --uid $UID --gid $GID minecraft && \
+    chown -R minecraft $DATA_DIR
+
+COPY ./start-server.sh /opt/start-server.sh
+
+USER minecraft
+
+ENTRYPOINT ["/opt/start-server.sh"]
