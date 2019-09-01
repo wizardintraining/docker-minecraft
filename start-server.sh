@@ -2,6 +2,10 @@
 
 function shutdown() {
   echo "Stopping Container..."
+  screen -p 0 -S Minecraft -X eval 'stuff "say §cSERVER SHUTTING DOWN..."\015'
+  sleep 3
+  screen -p 0 -S Minecraft -X eval 'stuff "save-all"\015'
+  screen -p 0 -S Minecraft -X eval 'stuff "stop"\015'
 }
 
 echo "Starting Container..."
@@ -71,6 +75,23 @@ elif [ "${ACCEPT_EULA}" == "true" ]; then
   fi
 fi
 
-trap shutdown SIGINT
+# Signal Traps for graceful Minecraft shutdown
+# on callback, kill the last background process, which is `tail -F ${SERVER_DIR}/logs/latest.log` and execute the specified handler
+trap 'kill ${!}; shutdown' SIGTERM
+trap 'kill ${!}; shutdown' SIGINT
 
-sleep infinity
+# Start the server via screen
+echo "Starting Server..."
+cd ${SERVER_DIR}
+screen -DmS Minecraft java -Xms${XMS_SIZE}M -Xmx${XMX_SIZE}M ${OPT_PARAMS} -jar ${SERVER_DIR}/${JAR_NAME}.jar nogui &
+sleep 5
+
+# Logs
+# Wait until the log file exists
+while [ ! -f ${SERVER_DIR}/logs/latest.log ];
+do
+  sleep 2
+done
+
+# tail the log file for docker
+tail -F ${SERVER_DIR}/logs/latest.log & wait ${!}

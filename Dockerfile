@@ -1,12 +1,15 @@
 FROM openjdk:8u222
 
 RUN apt-get update && \
-    apt-get install -y wget
+    apt-get install -y wget screen
 
 ENV DATA_DIR="/data" \
     SERVER_DIR="/data/server" \
     JAR_NAME="server" \
+    OPT_PARAMS="" \
     ACCEPT_EULA="false" \
+    XMS_SIZE="1024" \
+    XMX_SIZE="1024" \
     UID="500" \
     GID="100"
 
