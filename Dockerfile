@@ -6,6 +6,7 @@ RUN apt-get update && \
 ENV DATA_DIR="/data" \
     SERVER_DIR="/data/server" \
     JAR_NAME="server" \
+    ACCEPT_EULA="false" \
     UID="500" \
     GID="100"
 

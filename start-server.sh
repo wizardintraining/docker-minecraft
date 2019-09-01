@@ -43,6 +43,34 @@ if [ ! -f ${SERVER_DIR}/server.properties ]; then
   fi
 fi
 
+# Validate the ACCEPT_EULA variable
+if [ "${ACCEPT_EULA}" != "true" ] && [ "${ACCEPT_EULA}" != "false" ]; then
+  echo "Something went wrong, please check ACCEPT_EULA variable."
+  sleep infinity
+  exit
+fi
+
+# Create the EULA file if it does not exist with the defined value
+if [ ! -f $SERVER_DIR/eula.txt ]; then
+  echo "eula=${ACCEPT_EULA}" >> ${SERVER_DIR}/eula.txt
+fi
+
+# Halt if the ACCEPT_EULA value is false
+if [ "${ACCEPT_EULA}" == "false" ]; then
+  # Alter the eula.txt file if previoulsy true
+  if grep -rq 'eula=true' ${SERVER_DIR}/eula.txt; then
+    sed -i '/eula=true/c\eula=false' ${SERVER_DIR}/eula.txt
+  fi
+  echo "You must accept the EULA to start the server."
+  sleep infinity
+  exit
+elif [ "${ACCEPT_EULA}" == "true" ]; then
+  # Alter the eula.txt file if previoulsy false
+  if grep -rq 'eula=false' ${SERVER_DIR}/eula.txt; then
+    sed -i '/eula=false/c\eula=true' ${SERVER_DIR}/eula.txt
+  fi
+fi
+
 trap shutdown SIGINT
 
 sleep infinity
