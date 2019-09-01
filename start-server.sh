@@ -4,8 +4,8 @@ function shutdown() {
   echo "Stopping Container..."
   screen -p 0 -S Minecraft -X eval 'stuff "say §cSERVER SHUTTING DOWN..."\015'
   sleep 3
-  screen -p 0 -S Minecraft -X eval 'stuff "save-all"\015'
   screen -p 0 -S Minecraft -X eval 'stuff "stop"\015'
+  exit 143
 }
 
 echo "Starting Container..."
