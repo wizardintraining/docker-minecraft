@@ -9,13 +9,12 @@ ENV DATA_DIR="/data" \
     OPT_PARAMS="" \
     ACCEPT_EULA="false" \
     XMS_SIZE="1024" \
-    XMX_SIZE="1024" \
-    UID="500" \
-    GID="100"
+    XMX_SIZE="1024"
 
-RUN mkdir $DATA_DIR
+RUN mkdir $DATA_DIR && \
+    mkdir $SERVER_DIR
 
-RUN useradd -d $DATA_DIR -s /bin/bash --uid $UID --gid $GID minecraft && \
+RUN useradd -d $DATA_DIR -s /bin/bash --uid 99 --gid 100 minecraft && \
     chown -R minecraft $DATA_DIR
 
 COPY ./start-server.sh /opt/start-server.sh

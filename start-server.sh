@@ -1,11 +1,12 @@
 #!/bin/bash
 
 function shutdown() {
-  echo "Stopping Container..."
+  echo "Stopping Minecraft..."
   screen -p 0 -S Minecraft -X eval 'stuff "say §cSERVER SHUTTING DOWN"\015'
   sleep 3
   screen -p 0 -S Minecraft -X eval 'stuff "stop"\015'
-  exit 143
+  echo "Stopping Container"
+  exit
 }
 
 echo "Starting Container..."
@@ -74,6 +75,8 @@ elif [ "${ACCEPT_EULA}" == "true" ]; then
     sed -i '/eula=false/c\eula=true' ${SERVER_DIR}/eula.txt
   fi
 fi
+
+chmod 777 -R ${SERVER_DIR}
 
 # Signal Traps for graceful Minecraft shutdown
 # on callback, kill the last background process, which is `tail -F ${SERVER_DIR}/logs/latest.log` and execute the specified handler
