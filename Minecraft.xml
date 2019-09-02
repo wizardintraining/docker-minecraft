@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>Minecraft</Name>
+  <Repository>dbkynd/minecraft</Repository>
+  <Registry>https://hub.docker.com/r/dbkynd/minecraft</Registry>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support/>
+  <Project>https://www.minecraft.net/</Project>
+  <Overview>This is a Basic Minecraft Server, with the basic configuration it will download and install a Vanilla Minecraft. You can also install a FTB (FeedTheBeast), Bukkit, Spigot,... server. Start the container for the first time let it do it's work and shut it down. After that copy over your favorite server executable (don't forget to set the Jar Name to the same as you copied over) and start the container again. ATTENTION: Don't forget to accept the EULA down below and don't forget to edit the 'server.properties' file. The server is by default configured to be a LAN server and to be not snooped. CONSOLE: To connect to the console open up a terminal and type in: 'screen -xS Minecraft' (without quotes), to disconnect from the console simply close the window.</Overview>
+  <Category/>
+  <WebUI/>
+  <TemplateURL/>
+  <Icon>https://raw.githubusercontent.com/dbkynd/docker-minecraft/master/mc.png</Icon>
+  <ExtraParams>--restart=unless-stopped</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled>1566761552</DateInstalled>
+  <DonateText/>
+  <DonateLink/>
+  <Description>This is a Basic Minecraft Server, with the basic configuration it will download and install a Vanilla Minecraft. You can also install a FTB (FeedTheBeast), Bukkit, Spigot,... server. Start the container for the first time let it do it's work and shut it down. After that copy over your favorite server executable (don't forget to set the Jar Name to the same as you copied over) and start the container again. ATTENTION: Don't forget to accept the EULA down below and don't forget to edit the 'server.properties' file. The server is by default configured to be a LAN server and to be not snooped. CONSOLE: To connect to the console open up a terminal and type in: 'screen -xS Minecraft' (without quotes), to disconnect from the console simply close the window.</Description>
+  <Networking>
+    <Mode>bridge</Mode>
+    <Publish>
+      <Port>
+        <HostPort>25565</HostPort>
+        <ContainerPort>25565</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+      <Port>
+        <HostPort>25575</HostPort>
+        <ContainerPort>25575</ContainerPort>
+        <Protocol>tcp</Protocol>
+      </Port>
+    </Publish>
+  </Networking>
+  <Labels/>
+  <Config Name="Data Files" Target="/data" Default="/mnt/user/appdata/minecraft" Mode="rw" Description="Container Path: /data" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/minecraft</Config>
+  <Config Name="Jar Name" Target="JAR_NAME" Default="server" Mode="" Description="Enter the startup executable jar file without the .jar extension. (Default: server)" Type="Variable" Display="always" Required="true" Mask="false">server</Config>
+  <Config Name="Extra Java Parameters" Target="OPT_PARAMS" Default="" Mode="" Description="Enter any additional JAVA startup parameters." Type="Variable" Display="always" Required="false" Mask="false">-XX:+UseG1GC -Dsun.rmi.dgc.server.gcInterval=2147483646 -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M</Config>
+  <Config Name="XMS Size" Target="XMS_SIZE" Default="1" Mode="" Description="Enter your XMS size in MB." Type="Variable" Display="always" Required="true" Mask="false">2048</Config>
+  <Config Name="XMX Size" Target="XMX_SIZE" Default="1" Mode="" Description="Enter your XMX size in MB." Type="Variable" Display="always" Required="true" Mask="false">2048</Config>
+  <Config Name="TCP - Game Port" Target="25565" Default="25565" Mode="tcp" Description="Container Port: 25565" Type="Port" Display="always" Required="true" Mask="false">25565</Config>
+  <Config Name="TCP2 - RCON" Target="25575" Default="25575" Mode="tcp" Description="Not required if not needed" Type="Port" Display="always" Required="false" Mask="false">25575</Config>
+  <Config Name="Accept EULA" Target="ACCEPT_EULA" Default="false" Mode="" Description="Head over to: https://account.mojang.com/documents/minecraft_eula to read the EULA. (If you accept the EULA change the value to 'true' without quotes)." Type="Variable" Display="always" Required="true" Mask="false">false</Config>
+  <Config Name="UID" Target="UID" Default="" Mode="" Description="Container Variable: UID" Type="Variable" Display="advanced-hide" Required="true" Mask="false">99</Config>
+  <Config Name="GID" Target="GID" Default="" Mode="" Description="Container Variable: GID" Type="Variable" Display="advanced-hide" Required="true" Mask="false">100</Config>
+</Container>
