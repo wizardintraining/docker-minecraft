@@ -1,27 +1,27 @@
 FROM openjdk:8u222
 
 RUN apt-get update && \
-    apt-get install -y wget screen
+    apt-get install -y \
+    cron \
+    screen \
+    wget \
+    zip
 
-ENV DATA_DIR="/data" \
-    SERVER_DIR="/data/server" \
+ENV SERVER_DIR="/data" \
+    BACKUP_DIR="/data/backups" \
     JAR_NAME="server" \
     OPT_PARAMS="" \
     ACCEPT_EULA="false" \
     XMS_SIZE="1024" \
-    XMX_SIZE="1024"
+    XMX_SIZE="1024" \
+    BACKUP_ENABLED="false" \
+    BACKUP_INTERVAL="2" \
+    BACKUP_RETENTION="10"
 
-RUN mkdir $DATA_DIR && \
-    mkdir $SERVER_DIR
+COPY scripts/ /opt/
 
-RUN useradd -d $DATA_DIR -s /bin/bash --uid 99 --gid 100 minecraft && \
-    chown -R minecraft $DATA_DIR
+RUN chmod 770 -R /opt
 
-COPY ./start-server.sh /opt/start-server.sh
-
-RUN chmod 770 /opt/start-server.sh && \
-    chown minecraft /opt/start-server.sh
-
-USER minecraft
+RUN touch /etc/crontab /etc/cron.*/*
 
 ENTRYPOINT ["/opt/start-server.sh"]

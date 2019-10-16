@@ -2,10 +2,11 @@
 
 function shutdown() {
   echo "Stopping Minecraft..."
-  screen -p 0 -S Minecraft -X eval 'stuff "say §cSERVER SHUTTING DOWN"\015'
+  screen -R Minecraft -X stuff "say §cServer Shutting Down\015"
+  screen -R Minecraft -X stuff "save-all\015"
   sleep 3
-  screen -p 0 -S Minecraft -X eval 'stuff "stop"\015'
-  echo "Stopping Container"
+  screen -R Minecraft -X stuff "stop\015"
+  echo "Stopping container."
   exit
 }
 
@@ -50,7 +51,7 @@ fi
 
 # Validate the ACCEPT_EULA variable
 if [ "${ACCEPT_EULA}" != "true" ] && [ "${ACCEPT_EULA}" != "false" ]; then
-  echo "Something went wrong, please check ACCEPT_EULA variable."
+  echo "Something went wrong, please check the ACCEPT_EULA variable."
   sleep infinity
   exit
 fi
@@ -74,6 +75,26 @@ elif [ "${ACCEPT_EULA}" == "true" ]; then
   if grep -rq 'eula=false' ${SERVER_DIR}/eula.txt; then
     sed -i '/eula=false/c\eula=true' ${SERVER_DIR}/eula.txt
   fi
+fi
+
+# Validate the BACKUP_ENABLED variable
+if [ "${BACKUP_ENABLED}" != "true" ] && [ "${BACKUP_ENABLED}" != "false" ]; then
+  echo "Something went wrong, please check the BACKUP_ENABLED variable."
+  sleep infinity
+  exit
+fi
+
+if [ "${BACKUP_ENABLED}" == "true" ]; then
+  echo "Backups: ENABLED - Interval: ${BACKUP_INTERVAL}hrs - Retention: ${BACKUP_RETENTION}"
+  # Export the ENV variables for crontab
+  scriptPath=$(dirname "$(readlink -f "$0")")
+  printenv | sed 's/^\(.*\)$/export \1/g' > ${scriptPath}/.env.sh
+  chmod +x ${scriptPath}/.env.sh
+  # Create the cron entry and start cron
+  echo "*/${BACKUP_INTERVAL} * * * * /root/project_env.sh; /opt/backup-server.sh" | crontab -
+  /etc/init.d/cron start > /dev/null
+else
+  echo "Backups: DISABLED"
 fi
 
 chmod 777 -R ${SERVER_DIR}
