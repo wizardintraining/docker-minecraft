@@ -37,18 +37,18 @@
     </Publish>
   </Networking>
   <Labels/>
-  <Config Name="Minecraft Server Files" Target="/data/server" Default="/mnt/user/appdata/minecraft" Mode="rw" Description="Container Path: /data/server" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/minecraft</Config>
-  <Config Name="Backup Location" Target="/data/server/backups" Default="/mnt/user/appdata/minecraft/backups" Mode="rw" Description="Container Path: /data/server/backups (Leave blank to use default location)" Type="Path" Display="always" Required="false" Mask="false"/>
-  <Config Name="Jar Name" Target="JAR_NAME" Default="server" Mode="" Description="Enter the startup executable jar file without the .jar extension. (Default: server)" Type="Variable" Display="always" Required="true" Mask="false">server</Config>
-  <Config Name="Extra Java Parameters" Target="OPT_PARAMS" Default="" Mode="" Description="Enter any additional JAVA startup parameters." Type="Variable" Display="always" Required="false" Mask="false">-XX:+UseG1GC -Dsun.rmi.dgc.server.gcInterval=2147483646 -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M</Config>
-  <Config Name="XMS Size" Target="XMS_SIZE" Default="1" Mode="" Description="Enter your XMS size in MB." Type="Variable" Display="always" Required="false" Mask="false">2048</Config>
-  <Config Name="XMX Size" Target="XMX_SIZE" Default="1" Mode="" Description="Enter your XMX size in MB." Type="Variable" Display="always" Required="false" Mask="false">2048</Config>
-  <Config Name="TCP - Game Port" Target="25565" Default="25565" Mode="tcp" Description="Container Port: 25565" Type="Port" Display="always" Required="true" Mask="false">25565</Config>
-  <Config Name="TCP2 - RCON" Target="25575" Default="25575" Mode="tcp" Description="Not required if not needed" Type="Port" Display="always" Required="false" Mask="false">25575</Config>
+  <Config Name="Minecraft Server Files" Target="/data" Default="/mnt/user/appdata/minecraft" Mode="rw" Description="Container Path: /data" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Backup Location" Target="/data/backups" Default="" Mode="rw" Description="Container Path: /data/backups (Leave blank to use default location)" Type="Path" Display="always" Required="false" Mask="false"/>
+  <Config Name="Jar Name" Target="JAR_NAME" Default="server" Mode="" Description="Enter the startup executable jar file without the .jar extension. (Default: server)" Type="Variable" Display="always" Required="true" Mask="false"/>
+  <Config Name="Extra Java Parameters" Target="OPT_PARAMS" Default="-XX:+UseG1GC -Dsun.rmi.dgc.server.gcInterval=2147483646 -XX:+UnlockExperimentalVMOptions -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M" Mode="" Description="Enter any additional JAVA startup parameters." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="XMS Size" Target="XMS_SIZE" Default="1024" Mode="" Description="Enter your XMS size in MB." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="XMX Size" Target="XMX_SIZE" Default="1024" Mode="" Description="Enter your XMX size in MB." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="TCP - Game Port" Target="25565" Default="25565" Mode="tcp" Description="Container Port: 25565" Type="Port" Display="always" Required="true" Mask="false"/>
+  <Config Name="TCP2 - RCON" Target="25575" Default="25575" Mode="tcp" Description="Not required if not needed" Type="Port" Display="always" Required="false" Mask="false"/>
   <Config Name="Accept EULA" Target="ACCEPT_EULA" Default="false" Mode="" Description="Head over to: https://account.mojang.com/documents/minecraft_eula to read the EULA. (If you accept the EULA change the value to 'true' without quotes)." Type="Variable" Display="always" Required="true" Mask="false">false</Config>
   <Config Name="Enable Backups" Target="BACKUP_ENABLED" Default="false" Mode="" Description="Enable automated backups at the specified interval. Will only retain the specified # of backups." Type="Variable" Display="always" Required="false" Mask="false">false</Config>
-  <Config Name="Backup Interval" Target="BACKUP_INTERVAL" Default="120" Mode="" Description="How often (in minutes) to trigger an automated backup." Type="Variable" Display="always" Required="false" Mask="false">120</Config>
-  <Config Name="Backup Retention" Target="BACKUP_RETENTION" Default="10" Mode="" Description="The number of backups to retain before removing the oldest." Type="Variable" Display="always" Required="false" Mask="false">10</Config>
-  <Config Name="UID" Target="UID" Default="" Mode="" Description="Container Variable: UID" Type="Variable" Display="advanced-hide" Required="true" Mask="false">99</Config>
-  <Config Name="GID" Target="GID" Default="" Mode="" Description="Container Variable: GID" Type="Variable" Display="advanced-hide" Required="true" Mask="false">100</Config>
+  <Config Name="Backup Interval" Target="BACKUP_INTERVAL" Default="2" Mode="" Description="How often (in hours) to trigger an automated backup. Runs at top of the hour." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="Backup Retention" Target="BACKUP_RETENTION" Default="10" Mode="" Description="The number of backups to retain before removing the oldest." Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="UID" Target="UID" Default="99" Mode="" Description="Container Variable: UID" Type="Variable" Display="advanced-hide" Required="true" Mask="false"/>
+  <Config Name="GID" Target="GID" Default="100" Mode="" Description="Container Variable: GID" Type="Variable" Display="advanced-hide" Required="true" Mask="false"/>
 </Container>

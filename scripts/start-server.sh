@@ -91,7 +91,7 @@ if [ "${BACKUP_ENABLED}" == "true" ]; then
   printenv | sed 's/^\(.*\)$/export \1/g' > ${scriptPath}/.env.sh
   chmod +x ${scriptPath}/.env.sh
   # Create the cron entry and start cron
-  echo "*/${BACKUP_INTERVAL} * * * * /root/project_env.sh; /opt/backup-server.sh" | crontab -
+  echo "0 */${BACKUP_INTERVAL} * * * /root/project_env.sh; /opt/backup-server.sh" | crontab -
   /etc/init.d/cron start > /dev/null
 else
   echo "Backups: DISABLED"

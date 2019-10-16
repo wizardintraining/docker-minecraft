@@ -18,7 +18,7 @@ if [ ! -d ${BACKUP_DIR} ]; then
 fi
 
 # Create a backup
-_now=$(date +"%m_%d_%Y_%T")
+_now=$(date +"%s")
 _file="${BACKUP_DIR}/${_now}"
 
 cd ${SERVER_DIR}
