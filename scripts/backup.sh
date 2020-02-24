@@ -5,11 +5,11 @@ scriptPath=$(dirname "$(readlink -f "$0")")
 source "${scriptPath}/.env.sh"
 
 # Notify players that a backup is starting
-screen -R Minecraft -X stuff "say §dBackup starting...\015"
+tmux send-keys -t Minecraft "say §dBackup starting...\015"
 
 # Turn off auto-saving and do a manual save
-screen -R Minecraft -X stuff "save-off\015"
-screen -R Minecraft -X stuff "save-all\015"
+tmux send-keys -t Minecraft "save-off\015"
+tmux send-keys -t Minecraft "save-all\015"
 sleep 3
 
 # Create backups folder if it does not exist
@@ -29,5 +29,5 @@ cd ${BACKUP_DIR}
 ls -t | sed -e "1,${BACKUP_RETENTION}d" | xargs -d '\n' rm
 
 # Notify players that the backup has completed
-screen -R Minecraft -X stuff "save-on\015"
-screen -R Minecraft -X stuff "say §dBackup complete.\015"
+tmux send-keys -t Minecraft "save-on\015"
+tmux send-keys -t Minecraft "say §dBackup complete.\015"
