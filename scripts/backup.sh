@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 # Import the ENV variables
 scriptPath=$(dirname "$(readlink -f "$0")")
