@@ -1,4 +1,4 @@
-#!/bin/bash
+#! /bin/bash
 set -euo pipefail
 
 function shutdown() {
@@ -42,8 +42,8 @@ fi
 
 # Download vanilla Minecraft server if the designated .jar is not found
 if [ ! -f $SERVER_DIR/${JAR_NAME}.jar ] && [ "${JAR_NAME}" == "vanilla" ]; then
-  echo "Downloading Minecraft Server 1.15.2 ..."
-  wget -q 'https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar' -O ${SERVER_DIR}/${JAR_NAME}.jar
+  echo "Downloading Minecraft Server 1.16.5 ..."
+  curl -q 'https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar' --output ${SERVER_DIR}/${JAR_NAME}.jar
   if [ ! -f $SERVER_DIR/${JAR_NAME}.jar ]; then
     echo "Error downloading server jar file."
     sleep infinity
@@ -56,7 +56,7 @@ fi
 # Download default server.properties file if one is not found
 if [ ! -f ${SERVER_DIR}/server.properties ]; then
   echo "Copying default server.properties file..."
-  cp /opt/serverproperties.default ${SERVER_DIR}/server.properties 
+  cp --no-preserve=all /opt/serverproperties.default ${SERVER_DIR}/server.properties
 fi
 
 # Validate the ACCEPT_EULA variable
@@ -65,6 +65,7 @@ if [ "${ACCEPT_EULA}" != "true" ] && [ "${ACCEPT_EULA}" != "false" ]; then
   sleep infinity
   exit
 fi
+
 
 # Create the EULA file if it does not exist with the defined value
 if [ ! -f $SERVER_DIR/eula.txt ]; then
@@ -107,8 +108,6 @@ else
   echo "Backups: DISABLED"
 fi
 
-chmod 777 -R ${SERVER_DIR}
-
 # Signal Traps for graceful Minecraft shutdown
 # on callback, kill the last background process, which is `tail -F ${SERVER_DIR}/logs/latest.log` and execute the specified handler
 trap 'kill ${!}; shutdown' SIGTERM
@@ -117,9 +116,10 @@ trap 'kill ${!}; shutdown' SIGINT
 # Start the server via tmux
 echo "Starting Server..."
 cd ${SERVER_DIR}
-tmux new-session -d -n Minecraft java -Xms${XMS_SIZE}M -Xmx${XMX_SIZE}M ${OPT_PARAMS} -jar ${JAR_NAME}.jar nogui
-sleep 5
+chmod g+s ./
+tmux new-session -d -n Minecraft /bin/bash -c "umask 0000;java -Xms${XMS_SIZE}M -Xmx${XMX_SIZE}M ${JAVA_OPTIONS} -jar ${JAR_NAME}.jar nogui"
 echo "logging wait ..."
+sleep 5
 # Logs
 # Wait until the log file exists
 while [ ! -f ${SERVER_DIR}/logs/latest.log ];
